@@ -1,11 +1,13 @@
 package main
 
-import "fmt"
+import (
+  "fmt"
+  "os"
+)
 
 func main(){
-  var name string
+  args := os.Args
 
-  fmt.Print("What's your name? ")
-  fmt.Scanln(&name)
-  fmt.Println("Hello ", name)
+  fmt.Println("The arguments are : ", args)
+  fmt.Println("Hello ", args[1])
 }
