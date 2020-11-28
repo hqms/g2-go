@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type person struct {
 	name string
@@ -13,6 +16,15 @@ func newPerson(name string) *person {
 	return &p
 }
 
+func (p person) getBirthYear() int{
+	if p.age <= 0{
+		return 0
+	}else{
+		now := time.Now()
+		return now.Year() - p.age
+	}
+}
+
 func main() {
 
 	fmt.Println(person{"Bob", 20})
@@ -22,7 +34,7 @@ func main() {
 
 	fmt.Println(newPerson("Jon"))
 	s := person{name: "Sean", age: 50}
-	fmt.Println(s.name)
+	fmt.Println(s.name, " born in ", s.getBirthYear())
 
 	sp := &s
 	fmt.Println(sp.age)
