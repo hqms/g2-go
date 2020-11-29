@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
@@ -49,5 +50,16 @@ func main() {
 		fmt.Printf("id: %s; page: %s; name: %s; message: %s", id, page, name, message)
 	})
 
+	r.MaxMultipartMemory = 8 << 20  // 8 MiB
+	r.POST("/upload", func(c *gin.Context) {
+
+		file, _ := c.FormFile("file")
+		log.Println(file.Filename)
+
+		dst := "uploaded/"+ file.Filename
+		c.SaveUploadedFile(file, dst)
+
+		c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded!", file.Filename))
+	})
 	r.Run()
 }
