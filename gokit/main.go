@@ -1,6 +1,9 @@
 package gokit
 
-import "strings"
+import (
+	"errors"
+	"strings"
+)
 
 // StringService provides operations on strings.
 type StringService interface {
@@ -21,3 +24,6 @@ func (stringService) Uppercase(s string) (string, error) {
 func (stringService) Count(s string) int {
 	return len(s)
 }
+
+// ErrEmpty is returned when input string is empty
+var ErrEmpty = errors.New("Empty string")
