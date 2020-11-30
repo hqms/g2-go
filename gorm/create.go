@@ -10,8 +10,15 @@ type User struct {
 	gorm.Model
 	Name    string
 	Age     int
-	Address string
+	Address []Address
 }
+
+type Address struct {
+	gorm.Model
+	Alamat string
+	UserID uint
+}
+
 
 func main() {
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -20,26 +27,13 @@ func main() {
 	}
 
 	db.AutoMigrate(&User{})
+	db.AutoMigrate(&Address{})
 
-	joni := User{Name: "HQM", Age: 17, Address: "disitu"}
+	joni := User{Name: "HQM with address", Age: 17, Address: []Address{{ Alamat: "Disini"}, {Alamat: "dimana mana"}}}
 	result := db.Create(&joni)
 
 	fmt.Println("ID: ", joni.ID)
 	fmt.Println("If error return :", result.Error)
 	fmt.Println("Row retruned ", result.RowsAffected)
 
-	users := []User{
-		{
-			Name:    "Joni",
-			Age:     12,
-			Address: "Disana",
-		},
-		{
-			Name:    "Iskandar",
-			Age:     23,
-			Address: "Dimana mana",
-		},
-	}
-
-	db.CreateInBatches(users, len(users))
 }
