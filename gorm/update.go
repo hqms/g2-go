@@ -23,3 +23,4 @@ func main() {
 	db.Model(&User{}).Where("id=?", 1).Updates(User{ Name: "Super Senior", Age:  100, })
 
 }
+
