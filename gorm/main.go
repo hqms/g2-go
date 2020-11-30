@@ -1,8 +1,8 @@
 package main
 
 import (
-	"gorm.io/gorm"
 	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 type Product struct {
