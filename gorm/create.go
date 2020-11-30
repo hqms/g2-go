@@ -27,4 +27,19 @@ func main() {
 	fmt.Println("ID: ", joni.ID)
 	fmt.Println("If error return :", result.Error)
 	fmt.Println("Row retruned ", result.RowsAffected)
+
+	users := []User{
+		{
+			Name:    "Joni",
+			Age:     12,
+			Address: "Disana",
+		},
+		{
+			Name:    "Iskandar",
+			Age:     23,
+			Address: "Dimana mana",
+		},
+	}
+
+	db.CreateInBatches(users, len(users))
 }
