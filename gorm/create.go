@@ -6,20 +6,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type User struct {
-	gorm.Model
-	Name    string
-	Age     int
-	Address []Address
-}
-
-type Address struct {
-	gorm.Model
-	Alamat string
-	UserID uint
-}
-
-
 func main() {
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {
