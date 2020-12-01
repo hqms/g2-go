@@ -12,7 +12,12 @@ func GetUsers(c *gin.Context)  {
 	if err != nil{
 		c.AbortWithStatus(http.StatusNotFound)
 	}else{
-		c.JSON(http.StatusOK, user)
+		format := c.DefaultQuery("format", "json")
+		if format == "json"{
+			c.JSON(http.StatusOK, user)
+		}else{
+			c.XML(http.StatusOK, user)
+		}
 	}
 }
 
