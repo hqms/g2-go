@@ -1,13 +1,29 @@
 package Routes
 
 import (
-
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"theapp/Controllers"
+	"theapp/Service"
 )
 
 func SetupRouter() *gin.Engine  {
 	r := gin.Default()
+
+	var loginService Service.LoginService = Service.StaticLoginService()
+	var jwtService Service.JWTService = Service.JwtAuthService()
+	var loginController Controllers.LoginController = Controllers.LoginHandler(loginService, jwtService)
+
+	r.POST("/login", func(context *gin.Context) {
+		token := loginController.Login(context)
+		if token != ""{
+			context.JSON(http.StatusOK, gin.H{
+				"token": token,
+			})
+		}else{
+			context.JSON(http.StatusUnauthorized, nil)
+		}
+	})
 
 	usergroup := r.Group("/userapi")
 	{
