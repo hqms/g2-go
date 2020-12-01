@@ -32,7 +32,7 @@ func SetupRouter() *gin.Engine  {
 
 	}
 
-	admingroup := r.Group("/admin",  Middlewares.AuthorizeJWT())
+	admingroup := r.Group("/admin",  Middlewares.AuthorizeJWT(), Middlewares.AuthorizeUser())
 	{
 		admingroup.GET("user/:id", Controllers.GetUserByID)
 		admingroup.POST("user", Controllers.CreateUser)
