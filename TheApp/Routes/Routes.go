@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"theapp/Controllers"
+	"theapp/Middlewares"
 	"theapp/Service"
 )
 
@@ -28,14 +29,12 @@ func SetupRouter() *gin.Engine  {
 	usergroup := r.Group("/userapi")
 	{
 		usergroup.GET("user", Controllers.GetUsers)
-		usergroup.GET("user/:id", Controllers.GetUserByID)
+
 	}
 
-	admingroup := r.Group("/admin",  gin.BasicAuth(gin.Accounts{
-		"foo":    "bar",
-		"bar":   "foo",
-	}))
+	admingroup := r.Group("/admin",  Middlewares.AuthorizeJWT())
 	{
+		admingroup.GET("user/:id", Controllers.GetUserByID)
 		admingroup.POST("user", Controllers.CreateUser)
 		admingroup.PUT("user/:id", Controllers.UpdateUser)
 		admingroup.DELETE("user/:id", Controllers.DeleteUser)
