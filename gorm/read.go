@@ -35,7 +35,6 @@ func main() {
 
 	var u User
 	where,_ := db.Table("users").Where("age=?", 17).Rows()
-
 	for where.Next(){
 		db.ScanRows(where, &u)
 		fmt.Println(u.ID)
