@@ -10,6 +10,7 @@ import (
 
 func SetupRouter() *gin.Engine  {
 	r := gin.Default()
+	r.Use(Middlewares.SignRequest)
 
 	var loginService Service.LoginService = Service.StaticLoginService()
 	var jwtService Service.JWTService = Service.JwtAuthService()
