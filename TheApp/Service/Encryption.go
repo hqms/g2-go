@@ -3,7 +3,9 @@ package Service
 import (
 	"crypto/aes"
 	"crypto/cipher"
+	"crypto/md5"
 	"encoding/base64"
+	"encoding/hex"
 )
 
 const KEY = "123456789012345678901234"
@@ -38,4 +40,10 @@ func Decrypt(text string) string {
 	plaintext := make([]byte, len(ciphertext))
 	cfb.XORKeyStream(plaintext, ciphertext)
 	return string(plaintext)
+}
+
+func MD5(str string) string {
+	s := md5.New()
+	s.Write([]byte(str))
+	return hex.EncodeToString(s.Sum(nil))
 }
