@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"time"
+	"sync"
 )
 
 func checkUrl(url string) {
@@ -16,14 +16,22 @@ func checkUrl(url string) {
 }
 
 func main() {
-
 	urls := []string{
 		"https://detik.com/",
 		"https://xl.co.id/",
 	}
-	for _, url := range urls {
-		go checkUrl(url)
-	}
-	time.Sleep(5 * time.Second)
-}
+	var wg sync.WaitGroup
 
+	for _, u := range urls {
+
+		wg.Add(1)
+		go func(url string) {
+
+			defer wg.Done()
+
+			checkUrl(url)
+		}(u)
+	}
+
+	wg.Wait()
+}
