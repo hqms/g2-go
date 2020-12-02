@@ -1,7 +1,10 @@
 package Routes
 
 import (
+	"github.com/getsentry/sentry-go"
+	sentrygin "github.com/getsentry/sentry-go/gin"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	"theapp/Controllers"
 	"theapp/Middlewares"
@@ -11,6 +14,15 @@ import (
 func SetupRouter() *gin.Engine  {
 	r := gin.Default()
 	r.Use(Middlewares.SignRequest)
+
+	if err := sentry.Init(sentry.ClientOptions{
+		Dsn: "https://9a1f5d57fb5545b1bec8fa373a7f3089@o485449.ingest.sentry.io/5541065",
+	});  err != nil {
+		log.Fatalf("sentry.Init: %s", err)
+	}
+	r.Use(sentrygin.New(sentrygin.Options{
+		Repanic: true,
+	}))
 
 	var loginService Service.LoginService = Service.StaticLoginService()
 	var jwtService Service.JWTService = Service.JwtAuthService()
@@ -26,6 +38,11 @@ func SetupRouter() *gin.Engine  {
 			context.JSON(http.StatusUnauthorized, nil)
 		}
 	})
+
+	sentrygroup := r.Group("/sentry")
+	{
+		sentrygroup.GET("error", Controllers.ErrorSentry)
+	}
 
 	usergroup := r.Group("/userapi")
 	{

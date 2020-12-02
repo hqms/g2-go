@@ -1,6 +1,9 @@
 package Models
 
-import "theapp/Config"
+import (
+	"github.com/getsentry/sentry-go"
+	"theapp/Config"
+)
 
 func GetAllUser(user *[]User) (err error)  {
 	if err = Config.DB.Find(user).Error; err != nil{
@@ -13,6 +16,7 @@ func CreateUser(user *User) (err error)  {
 	if err = Config.DB.Create(user).Error; err != nil{
 		return err
 	}
+	sentry.CaptureMessage("User created")
 	return nil
 }
 

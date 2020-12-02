@@ -11,6 +11,10 @@ func StaticAuthService() []AuthInformation{
 			Email:      "hakim@nganu.com",
 			Permission: []string{"GET", "POST","PUT","DELETE"},
 		},
+		AuthInformation{
+			Email:      "andreas@nganu.com",
+			Permission: []string{"GET", "POST"},
+		},
 	}
 	return authlist
 

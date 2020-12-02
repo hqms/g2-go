@@ -25,7 +25,7 @@ func SignRequest(context *gin.Context) {
 		context.Header("Signature", hash)
 
 		context.Next()
-		fmt.Println("Response body: " + w.body.String())
+		fmt.Println("Response body: \"" + w.body.String()+"\"")
 
 	}
 
