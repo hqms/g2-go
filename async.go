@@ -3,35 +3,44 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"sync"
 )
 
-func checkUrl(url string) {
+type urlStatus struct {
+	url    string
+	status bool
+}
+
+func checkUrl(url string, c chan urlStatus) {
 	_, err := http.Get(url)
 	if err != nil {
-		fmt.Println(url, "is down !!!")
-		return
+		// The website is down
+		c <- urlStatus{url, false}
+	} else {
+		// The website is up
+		c <- urlStatus{url, true}
 	}
-	fmt.Println(url, "is up and running.")
 }
 
 func main() {
+
 	urls := []string{
 		"https://detik.com/",
 		"https://xl.co.id/",
 	}
-	var wg sync.WaitGroup
 
-	for _, u := range urls {
+	c := make(chan urlStatus)
+	for _, url := range urls {
+		go checkUrl(url, c)
 
-		wg.Add(1)
-		go func(url string) {
-
-			defer wg.Done()
-
-			checkUrl(url)
-		}(u)
+	}
+	result := make([]urlStatus, len(urls))
+	for i, _ := range result {
+		result[i] = <-c
+		if result[i].status {
+			fmt.Println(result[i].url, "is up.")
+		} else {
+			fmt.Println(result[i].url, "is down !!")
+		}
 	}
 
-	wg.Wait()
 }
