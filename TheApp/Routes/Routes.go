@@ -4,11 +4,14 @@ import (
 	"github.com/getsentry/sentry-go"
 	sentrygin "github.com/getsentry/sentry-go/gin"
 	"github.com/gin-gonic/gin"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"log"
 	"net/http"
 	"theapp/Controllers"
 	"theapp/Middlewares"
 	"theapp/Service"
+	swaggerFiles "github.com/swaggo/files"
+	_ "theapp/docs"
 )
 
 func SetupRouter() *gin.Engine  {
@@ -57,5 +60,8 @@ func SetupRouter() *gin.Engine  {
 		admingroup.PUT("user/:id", Controllers.UpdateUser)
 		admingroup.DELETE("user/:id", Controllers.DeleteUser)
 	}
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	return r
 }

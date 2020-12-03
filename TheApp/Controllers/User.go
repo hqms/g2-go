@@ -6,6 +6,15 @@ import (
 	"theapp/Models"
 )
 
+// Get Users godoc
+// @Summary Show an account
+// @Description get string by ID
+// @Tags accounts
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Account ID"
+// @Success 200 {object} Models.User
+// @Router /userapi/user [get]
 func GetUsers(c *gin.Context)  {
 	var user[]Models.User
 	err := Models.GetAllUser(&user)
@@ -21,6 +30,14 @@ func GetUsers(c *gin.Context)  {
 	}
 }
 
+// Create Users godoc
+// @Summary Create an account
+// @Description get string by ID
+// @Tags accounts
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} Models.User
+// @Router /admin/user [POST]
 func CreateUser(c *gin.Context){
 	var user Models.User
 	c.BindJSON(&user)
